@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/grpc/user-grpc-lib/proto/user/v1"
+	pb "github.com/Kiraberos/grpc/user-grpc-lib/proto/user/v1"
 )
 
 // UserServiceInterface represents the existing HTTP service interface

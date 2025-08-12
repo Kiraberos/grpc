@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/keepalive"
 
-	pb "github.com/grpc/user-grpc-lib/proto/user/v1"
+	pb "github.com/Kiraberos/grpc/user-grpc-lib/proto/user/v1"
 )
 
 // Config ClientConfig holds configuration for the gRPC client
