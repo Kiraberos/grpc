@@ -249,3 +249,4 @@ config.TLSConfig = &tls.Config{
 ## License
 
 This library is released under the MIT License.
+# Updated module path
