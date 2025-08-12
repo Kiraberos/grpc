@@ -14,7 +14,7 @@ A comprehensive gRPC library for user management services, designed to integrate
 ## Installation
 
 ```bash
-go get github.com/grpc/user-grpc-lib
+go get github.com/Kiraberos/grpc/user-grpc-lib
 ```
 
 ## Quick Start
