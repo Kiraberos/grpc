@@ -886,7 +886,7 @@ const file_proto_user_v1_user_service_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12\x1a.user.v1.UpdateUserRequest\x1a\x1b.user.v1.UpdateUserResponse\x12E\n" +
 	"\n" +
-	"DeleteUser\x12\x1a.user.v1.DeleteUserRequest\x1a\x1b.user.v1.DeleteUserResponseB1Z/github.com/grpc/user-grpc-lib/pkg/pb/user/v1b\x06proto3"
+	"DeleteUser\x12\x1a.user.v1.DeleteUserRequest\x1a\x1b.user.v1.DeleteUserResponseB7Z5github.com/Kiraberos/grpc/user-grpc-lib/proto/user/v1b\x06proto3"
 
 var (
 	file_proto_user_v1_user_service_proto_rawDescOnce sync.Once
