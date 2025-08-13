@@ -6,70 +6,21 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
+	"github.com/Kiraberos/grpc/user-grpc-lib/pkg/models"
 	pb "github.com/Kiraberos/grpc/user-grpc-lib/proto/user/v1"
 )
 
-// UserServiceInterface represents the existing HTTP service interface
 type UserServiceInterface interface {
-	CreateUser(ctx context.Context, input UserCreateInput) (*UserModel, error)
-	GetUserByID(ctx context.Context, id string) (*UserModel, error)
-	GetUserByEmail(ctx context.Context, email string) (*UserModel, error)
-	UpdateUser(ctx context.Context, id string, input UserUpdateInput) (*UserModel, error)
-	DeleteUser(ctx context.Context, id string, actorID string, actorRole Role) error
-	ListUsers(ctx context.Context, page, pageSize int64) (*PaginatedUsersModel, error)
+	CreateUser(ctx context.Context, input models.UserCreateInput) (*models.UserModel, error)
+	GetUserByID(ctx context.Context, id string) (*models.UserModel, error)
+	GetUserByEmail(ctx context.Context, email string) (*models.UserModel, error)
+	UpdateUser(ctx context.Context, id string, input models.UserUpdateInput) (*models.UserModel, error)
+	DeleteUser(ctx context.Context, id string, actorID string, actorRole models.Role) error
+	ListUsers(ctx context.Context, page, pageSize int64) (*models.PaginatedUsersModel, error)
 	Login(ctx context.Context, email, password string) (string, error)
-	UpdateUserRole(ctx context.Context, id string, role Role, actorRole Role) error
-	UpdatePassword(ctx context.Context, id string, input UserPasswordUpdateInput) error
-}
-
-// Role represents user roles
-type Role string
-
-const (
-	RoleUser      Role = "user"
-	RoleModerator Role = "moderator"
-	RoleAdmin     Role = "admin"
-)
-
-type UserCreateInput struct {
-	Email     string
-	Password  string
-	FirstName string
-	LastName  string
-}
-
-type UserUpdateInput struct {
-	FirstName *string
-	LastName  *string
-}
-
-type UserPasswordUpdateInput struct {
-	CurrentPassword string
-	NewPassword     string
-}
-
-// UserModel represents the domain user model
-type UserModel struct {
-	ID        string
-	Email     string
-	FirstName string
-	LastName  string
-	Role      Role
-	CreatedAt *timestamppb.Timestamp
-	UpdatedAt *timestamppb.Timestamp
-	DeletedAt *timestamppb.Timestamp
-	Rating    int32
-}
-
-// PaginatedUsersModel represents paginated user results
-type PaginatedUsersModel struct {
-	Users      []*UserModel
-	Total      int64
-	Page       int64
-	PageSize   int64
-	TotalPages int64
+	UpdateUserRole(ctx context.Context, id string, role models.Role, actorRole models.Role) error
+	UpdatePassword(ctx context.Context, id string, input models.UserPasswordUpdateInput) error
 }
 
 // ModelConverter handles conversion between domain models and gRPC messages
@@ -80,7 +31,7 @@ func NewModelConverter() *ModelConverter {
 }
 
 // ConvertUserToProto converts domain user model to protobuf message
-func (c *ModelConverter) ConvertUserToProto(user *UserModel) *pb.User {
+func (c *ModelConverter) ConvertUserToProto(user *models.UserModel) *pb.User {
 	if user == nil {
 		return nil
 	}
@@ -99,13 +50,13 @@ func (c *ModelConverter) ConvertUserToProto(user *UserModel) *pb.User {
 }
 
 // ConvertRoleToProto converts domain role to protobuf role
-func (c *ModelConverter) ConvertRoleToProto(role Role) pb.Role {
+func (c *ModelConverter) ConvertRoleToProto(role models.Role) pb.Role {
 	switch role {
-	case RoleUser:
+	case models.RoleUser:
 		return pb.Role_ROLE_USER
-	case RoleModerator:
+	case models.RoleModerator:
 		return pb.Role_ROLE_MODERATOR
-	case RoleAdmin:
+	case models.RoleAdmin:
 		return pb.Role_ROLE_ADMIN
 	default:
 		return pb.Role_ROLE_UNSPECIFIED
@@ -113,16 +64,16 @@ func (c *ModelConverter) ConvertRoleToProto(role Role) pb.Role {
 }
 
 // ConvertRoleFromProto converts protobuf role to domain role
-func (c *ModelConverter) ConvertRoleFromProto(role pb.Role) Role {
+func (c *ModelConverter) ConvertRoleFromProto(role pb.Role) models.Role {
 	switch role {
 	case pb.Role_ROLE_USER:
-		return RoleUser
+		return models.RoleUser
 	case pb.Role_ROLE_MODERATOR:
-		return RoleModerator
+		return models.RoleModerator
 	case pb.Role_ROLE_ADMIN:
-		return RoleAdmin
+		return models.RoleAdmin
 	default:
-		return RoleUser
+		return models.RoleUser
 	}
 }
 
@@ -147,7 +98,7 @@ func (s *UserServiceServer) CreateUser(ctx context.Context, req *pb.CreateUserRe
 		return nil, status.Error(codes.InvalidArgument, "missing required fields")
 	}
 
-	input := UserCreateInput{
+	input := models.UserCreateInput{
 		Email:     req.Email,
 		Password:  req.Password,
 		FirstName: req.FirstName,
@@ -233,7 +184,7 @@ func (s *UserServiceServer) UpdateUser(ctx context.Context, req *pb.UpdateUserRe
 		return nil, status.Error(codes.InvalidArgument, "id is required")
 	}
 
-	input := UserUpdateInput{}
+	input := models.UserUpdateInput{}
 	if req.FirstName != nil {
 		input.FirstName = req.FirstName
 	}
